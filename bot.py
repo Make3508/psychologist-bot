@@ -19,7 +19,7 @@ async def chat(update: Update, context: ContextTypes.DEFAULT_TYPE):
     user_input = update.message.text
 
     response = client.chat.completions.create(
-        model="gpt-3.5",
+        model="gpt-3.5-turbo",
         messages=[
             {"role": "system", "content": "Ты — профессиональный психолог с 15-летним опытом. "
                                           "Ты говоришь спокойно, вдумчиво, эмпатично. Ты поддерживаешь, "
