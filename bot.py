@@ -19,15 +19,18 @@ async def chat(update: Update, context: ContextTypes.DEFAULT_TYPE):
     user_input = update.message.text
 
     response = client.chat.completions.create(
-        model="gpt-3.5-turbo",
+        model="gpt-4o",
         messages=[
             {"role": "system", "content": "Ты — профессиональный психолог с 15-летним опытом. "
                                           "Ты говоришь спокойно, вдумчиво, эмпатично. Ты поддерживаешь, "
                                           "задаёшь уточняющие вопросы и мягко помогаешь разобраться."},
-            {"role": "user", "content": user_input,},
+            {"role": "user", "content": user_input},
         ],
     )
     reply = response.choices[0].message.content
+    except Exception as e:
+        logger.error(f"Ошибка OpenAI: {e}")
+        reply = "Извините, произошла ошибка при обращении к психологу. Попробуйте позже."
     await update.message.reply_text(reply)
 
 app = ApplicationBuilder().token(TELEGRAM_TOKEN).build()
