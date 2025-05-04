@@ -1,12 +1,13 @@
 from telegram import Update
 from telegram.ext import ApplicationBuilder, CommandHandler, MessageHandler, ContextTypes, filters
-import openai
+from openai import openai
 import os
 
 TELEGRAM_TOKEN = os.getenv("TELEGRAM_TOKEN")
 OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
-openai.api_key = OPENAI_API_KEY
-
+client = OpenAI(
+  api_key = OPENAI_API_KEY
+)
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     await update.message.reply_text(
         "Здравствуйте. Меня зовут Аскар — я виртуальный психолог с более чем 15-летним опытом.\n"
@@ -17,8 +18,8 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
 async def chat(update: Update, context: ContextTypes.DEFAULT_TYPE):
     user_input = update.message.text
 
-    response = openai.ChatCompletion.create(
-        model="gpt-4",
+    response = client.chat.completions.create(
+        model="gpt-4o",
         messages=[
             {"role": "system", "content": "Ты — профессиональный психолог с 15-летним опытом. "
                                           "Ты говоришь спокойно, вдумчиво, эмпатично. Ты поддерживаешь, "
