@@ -1,6 +1,6 @@
 from telegram import Update
 from telegram.ext import ApplicationBuilder, CommandHandler, MessageHandler, ContextTypes, filters
-from openai import openai
+from openai import openAI
 import os
 
 TELEGRAM_TOKEN = os.getenv("TELEGRAM_TOKEN")
