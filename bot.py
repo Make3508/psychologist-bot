@@ -16,8 +16,8 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     )
 
 async def chat(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    user_input = update.message.text
-
+  user_input = update.message.text
+  try:
     response = client.chat.completions.create(
         model="gpt-4o",
         messages=[
