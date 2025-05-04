@@ -1,40 +1,35 @@
-import os
-from aiohttp import web
 from telegram import Update
-from telegram.ext import (
-    Application,
-    CommandHandler,
-    ContextTypes,
-)
+from telegram.ext import ApplicationBuilder, CommandHandler, MessageHandler, ContextTypes, filters
+import openai
+import os
 
-TOKEN = os.environ["BOT_TOKEN"]
-PORT = int(os.environ.get("PORT", 8443))
-
+TELEGRAM_TOKEN = os.getenv("TELEGRAM_TOKEN")
+OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
+openai.api_key = OPENAI_API_KEY
 
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    await update.message.reply_text("Привет! Я психолог-бот. Чем могу помочь?")
+    await update.message.reply_text(
+        "Здравствуйте. Меня зовут Аскар — я виртуальный психолог с более чем 15-летним опытом.\n"
+        "Я здесь, чтобы вы могли поговорить, получить поддержку и разобраться в том, что вас беспокоит.\n"
+        "Расскажите, как вы себя чувствуете сегодня?"
+    )
 
-def setup_webhook(application: Application):
-    async def handler(request):
-        data = await request.json()
-        update = Update.de_json(data, application.bot)
-        await application.process_update(update)
-        return web.Response(text="ok")
+async def chat(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    user_input = update.message.text
 
-    app = web.Application()
-    app.router.add_post("/", handler)
-    return app
+    response = openai.ChatCompletion.create(
+        model="gpt-4",
+        messages=[
+            {"role": "system", "content": "Ты — профессиональный психолог с 15-летним опытом. "
+                                          "Ты говоришь спокойно, вдумчиво, эмпатично. Ты поддерживаешь, "
+                                          "задаёшь уточняющие вопросы и мягко помогаешь разобраться."},
+            {"role": "user", "content": user_input}
+        ]
+    )
+    reply = response['choices'][0]['message']['content']
+    await update.message.reply_text(reply)
 
-
-async def main():
-    application = Application.builder().token(TOKEN).build()
-    application.add_handler(CommandHandler("start", start))
-    
-    # Set webhook URL from Railway public domain (replace later in real use)
-    webhook_url = os.environ.get("WEBHOOK_URL")
-    await application.bot.set_webhook(url=webhook_url)
-
-    return setup_webhook(application)
-
-if __name__ == "__main__":
-    web.run_app(main(), port=PORT)
+app = ApplicationBuilder().token(TELEGRAM_TOKEN).build()
+app.add_handler(CommandHandler("start", start))
+app.add_handler(MessageHandler(filters.TEXT & ~filters.COMMAND, chat))
+app.run_polling()

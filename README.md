@@ -1,6 +1,11 @@
-# Telegram Webhook Psychologist Bot
+# Telegram Psychologist Bot
 
-Вебхук-бот для Railway/Render. Имитирует онлайн-аватара психолога.
+Это MVP чат-бота для Telegram, имитирующий онлайн-аватара опытного психолога с 15-летним стажем.
+
+## Возможности
+- Эмпатичное и вдумчивое общение.
+- GPT-модель для генерации ответов.
+- Работа через Telegram Bot API.
 
 ## Установка
 
@@ -9,20 +14,14 @@
 pip install -r requirements.txt
 ```
 
-2. Создайте `.env` с переменными:
-- `TELEGRAM_TOKEN`
-- `OPENAI_API_KEY`
-- `WEBHOOK_DOMAIN` (например, https://yourapp.up.railway.app)
+2. Заполните ключи:
+- `TELEGRAM_TOKEN` — токен от @BotFather
+- `OPENAI_API_KEY` — ключ OpenAI (https://platform.openai.com)
 
 3. Запустите:
 ```
 python bot.py
 ```
 
-Бот будет слушать вебхуки от Telegram.
-
-## Зависимости
-
-- python-telegram-bot
-- openai
-- aiohttp
+## Примечание
+Бот не заменяет консультацию с живым специалистом. В кризисных ситуациях — обращайтесь к профессиональной помощи.
