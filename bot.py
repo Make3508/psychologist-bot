@@ -24,8 +24,8 @@ async def chat(update: Update, context: ContextTypes.DEFAULT_TYPE):
             {"role": "system", "content": "Ты — профессиональный психолог с 15-летним опытом. "
                                           "Ты говоришь спокойно, вдумчиво, эмпатично. Ты поддерживаешь, "
                                           "задаёшь уточняющие вопросы и мягко помогаешь разобраться."},
-            {"role": "user", "content": user_input}
-        ]
+            {"role": "user", "content": user_input},
+        ],
     )
     reply = response.choices[0].message.content
     await update.message.reply_text(reply)
