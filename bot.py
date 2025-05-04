@@ -28,10 +28,10 @@ async def chat(update: Update, context: ContextTypes.DEFAULT_TYPE):
         ],
     )
     reply = response.choices[0].message.content
-    except Exception as e:
-        logger.error(f"Ошибка OpenAI: {e}")
-        reply = "Извините, произошла ошибка при обращении к психологу. Попробуйте позже."
-    await update.message.reply_text(reply)
+  except Exception as e:
+    logger.error(f"Ошибка OpenAI: {e}")
+    reply = "Извините, произошла ошибка при обращении к психологу. Попробуйте позже."
+  await update.message.reply_text(reply)
 
 app = ApplicationBuilder().token(TELEGRAM_TOKEN).build()
 app.add_handler(CommandHandler("start", start))
