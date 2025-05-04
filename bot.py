@@ -27,7 +27,7 @@ async def chat(update: Update, context: ContextTypes.DEFAULT_TYPE):
             {"role": "user", "content": user_input}
         ]
     )
-    reply = response['choices'][0]['message']['content']
+    reply = response.choices[0].message.content
     await update.message.reply_text(reply)
 
 app = ApplicationBuilder().token(TELEGRAM_TOKEN).build()
